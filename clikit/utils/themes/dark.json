@@ -1,0 +1,9 @@
+{
+    "bg_color" : "#000000",
+    "fg_color" : "#000000",
+    "text_color" : "#ffffff",
+    "input_color": "#ffffff",
+    "cursor_fg" : "#ffffff",
+    "cursor_bg" : "#000000",
+    "logo_color" : "#ffffff"
+}

@@ -1,6 +1,5 @@
 import subprocess
 import platform
-import os
 
 
 def clear_terminal():
@@ -16,3 +15,6 @@ def clear_terminal():
         subprocess.run("cls", shell=True)
     else:
         subprocess.run("clear", shell=True)
+
+if __name__ == "__main__":
+    clear_terminal()

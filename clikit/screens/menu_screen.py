@@ -17,10 +17,11 @@ class MenuScreen():
             raise Exception("No options were given")
 
         self.terminal_name = config.terminal_name
-        self.main_color = config.main_color
-        self.text_color = config.text_color
+        self.bg_color = config.bg_color
+        self.fg_color = config.fg_color
         self.cursor = config.cursor
         self.logo = config.logo
+        self.logo_color = config.logo_color
 
         self.screen_title = screen_title
         self.screen_text = screen_text
@@ -43,9 +44,12 @@ class MenuScreen():
 
         displaytext = ' | '.join(option_names)
         terminal_w = (terminal_columns - len(displaytext)) / 2
+
+        # ITERAR A LISTA E APLICAR COR NOS ÚLTIMOS 3
+
         if terminal_w <= 0 or self.inline == False:
             displaytext = '\n'.join(option_names)
-        terminal_w -= 1 if (terminal_w % 1) > 0 else terminal_w
+        terminal_w -= 1 if (terminal_w % 1) > 0 else 0
 
         screen_logo = self.logo + "\n" if self.use_logo and self.logo else ''
         screen_text = self.screen_text + "\n\n" if self.screen_text else ''
@@ -56,7 +60,7 @@ class MenuScreen():
                 text=f"{screen_logo}{screen_text}{' ' * int(terminal_w)}{displaytext}"
                 ),
                 title=self.screen_title,
-                style=f"bg:{self.main_color} fg:{self.text_color}"
+                style=f"bg:{self.bg_color} fg:{self.fg_color}"
             )
         )
         try:
