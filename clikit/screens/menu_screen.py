@@ -45,7 +45,7 @@ class MenuScreen():
         displaytext = ' | '.join(option_names)
         terminal_w = (terminal_columns - len(displaytext)) / 2
 
-        # ITERAR A LISTA E APLICAR COR NOS ÚLTIMOS 3
+        # ITERAR A LISTA E APLICAR COR NOS ÚLTIMOS 3 << "Opção [0]" (Resultado/número)
 
         if terminal_w <= 0 or self.inline == False:
             displaytext = '\n'.join(option_names)

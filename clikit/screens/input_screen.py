@@ -1,7 +1,7 @@
 from clikit.clikit import CLIKit
+from clikit.layout.components import CLIKitFrame
 from prompt_toolkit import prompt, PromptSession
 from prompt_toolkit.shortcuts import print_container, set_title
-from prompt_toolkit.widgets import Frame
 from prompt_toolkit.layout.processors import PasswordProcessor
 from prompt_toolkit.formatted_text import FormattedText
 from prompt_toolkit.layout.containers import Window
@@ -27,6 +27,7 @@ class InputScreen():
         self.logo_color = config.logo_color
         self.text_color = config.text_color
         self.input_color = config.input_color
+        self.title_color = config.title_color
 
         self.screen_title = screen_title
         self.is_password = is_password
@@ -57,7 +58,7 @@ class InputScreen():
         )
 
         print_container(
-            Frame(
+            CLIKitFrame(
                 body=window,
                 title=self.screen_title,
                 style=f"bg:{bg_color} fg:{fg_color}"
