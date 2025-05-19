@@ -61,7 +61,7 @@ class CLIKitFrame:
                                 # Padding is required to make sure that if the content is
                                 # too small, the right frame border is still aligned.
                             ],
-                            padding=0,
+                            padding=1,
                         ),
                         VSplit(
                             [
