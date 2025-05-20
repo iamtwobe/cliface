@@ -1,2 +1,2 @@
 from .components import CLIKitFrame
-from .appframe import ConfirmationApp
+from .appframe import CLIKitApp

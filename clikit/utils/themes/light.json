@@ -6,5 +6,6 @@
     "cursor_fg" : "#000000",
     "cursor_bg" : "#ffffff",
     "logo_color" : "#000000",
-    "title_color" : "#000000"
+    "title_color" : "#000000",
+    "option_color" : "#000000"
 }

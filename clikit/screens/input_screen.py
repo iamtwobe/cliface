@@ -1,18 +1,17 @@
 from clikit.clikit import CLIKit
-from clikit.layout.components import CLIKitFrame
-from prompt_toolkit import prompt, PromptSession
-from prompt_toolkit.shortcuts import print_container, set_title
-from prompt_toolkit.layout.processors import PasswordProcessor
+from clikit.layout import CLIKitFrame, CLIKitApp
+from clikit.utils import clear_terminal
+from prompt_toolkit.shortcuts import set_title
 from prompt_toolkit.formatted_text import FormattedText
 from prompt_toolkit.layout.containers import Window
 from prompt_toolkit.layout.controls import FormattedTextControl
 from prompt_toolkit.formatted_text import HTML
 from prompt_toolkit.styles import Style
-from clikit.utils import clear_terminal
+import os
 
 
 class InputScreen():
-    def __init__(self, config: CLIKit, screen_title:str="", text:str="", 
+    def __init__(self, config: CLIKit, title:str="", text:str="", 
                 is_password=False, password_char='*', use_logo=False):
         if not config:
             raise Exception("No main config was given")
@@ -29,47 +28,57 @@ class InputScreen():
         self.input_color = config.input_color
         self.title_color = config.title_color
 
-        self.screen_title = screen_title
+        self.title = title
         self.is_password = is_password
+        self.password_char = password_char
         self.use_logo = use_logo
         self.text = text
-
-        self.processor = PasswordProcessor(char=password_char)
 
 
     def show(self):
         set_title(self.terminal_name)
         clear_terminal()
 
-        session = PromptSession(input_processors=[self.processor])
-
         screen_logo = self.logo + "\n" if self.use_logo and self.logo else ''
 
-        fg_color, bg_color, logo_color = self.fg_color, self.bg_color, self.logo_color
-        text_color = self.text_color
+        style = Style.from_dict({
+            '': f'fg:{self.input_color} bg:{self.cursor_bg}',
+            'input': f'fg:{self.input_color} bg:{self.cursor_bg}'
+        })
+
+        terminal_lines = os.get_terminal_size().lines
+
+        terminal_h = ((terminal_lines - len(screen_logo.splitlines())) / 2)
+
+        terminal_h -= 2 if (terminal_h % 1) > 0 else 0
+
+        text = f"{'\n' * int(terminal_h)}{self.text}"
 
         body_text = FormattedText([
-            (f"fg:{logo_color}", f"{screen_logo}"),
-            (f"fg:{text_color}", self.text)
+            (f"fg:{self.logo_color}", f"{screen_logo}"),
+            (f"fg:{self.text_color}", text)
         ])
 
         window = Window(
             content=FormattedTextControl(body_text)
         )
 
-        print_container(
-            CLIKitFrame(
+        frame = CLIKitFrame(
                 body=window,
-                title=self.screen_title,
-                style=f"bg:{bg_color} fg:{fg_color}"
+                title=HTML(f'<style fg="{self.title_color}">{self.title}</style>'),
+                style=f"bg:{self.bg_color} fg:{self.fg_color}"
             )
+
+        app_answer = CLIKitApp(
+            window=window,
+            frame=frame,
+            style=style,
+            cursor=self.cursor,
+            cursor_fg=self.cursor_fg,
+            is_password=self.is_password,
+            password_char=self.password_char
         )
-        
-        style = Style.from_dict({
-            '': f'fg:{self.input_color} bg:{self.cursor_bg}',
-        })
 
-        if self.is_password:
-            return session.prompt(HTML(f'<style fg="{self.cursor_fg}">{self.cursor} </style>'), style=style)
+        result = app_answer.result.lower()
 
-        return prompt(HTML(f'<style fg="{self.cursor_fg}">{self.cursor} </style>'), style=style)
+        return result

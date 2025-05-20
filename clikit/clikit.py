@@ -20,7 +20,7 @@ class CLIKit:
                 text_color=None, input_color=None,
                 cursor=None, cursor_fg=None, cursor_bg=None,
                 logo=None, logo_color=None,
-                title_color=None,
+                title_color=None, option_color=None,
                 theme=None
             ):
         if theme:
@@ -34,7 +34,8 @@ class CLIKit:
                 loaded_theme["bg_color"], loaded_theme["fg_color"],
                 loaded_theme["text_color"], loaded_theme["input_color"],
                 loaded_theme["cursor_fg"], loaded_theme["cursor_bg"],
-                loaded_theme["logo_color"], loaded_theme['title_color']
+                loaded_theme["logo_color"], loaded_theme["title_color"],
+                loaded_theme["option_color"]
             )
 
         
@@ -54,3 +55,4 @@ class CLIKit:
         if logo_color : self.logo_color = logo_color
 
         if title_color : self.title_color = title_color
+        if option_color : self.option_color = option_color

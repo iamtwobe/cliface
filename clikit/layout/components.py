@@ -1,6 +1,6 @@
 from prompt_toolkit.layout.containers import (
     VSplit, HSplit, Window, ConditionalContainer,
-    DynamicContainer, Container, AnyContainer
+    DynamicContainer, Container, AnyContainer, HorizontalAlign
 )
 from prompt_toolkit.widgets.base import Border, Condition, Label, Template
 from prompt_toolkit.formatted_text import AnyFormattedText
@@ -56,12 +56,12 @@ class CLIKitFrame:
                         VSplit(
                             [
                                 fill(width=1, char=Border.VERTICAL),
-                                DynamicContainer(lambda: self.body),
+                                DynamicContainer(lambda: body),
                                 fill(width=1, char=Border.VERTICAL),
                                 # Padding is required to make sure that if the content is
                                 # too small, the right frame border is still aligned.
                             ],
-                            padding=1,
+                            padding=1
                         ),
                         VSplit(
                             [

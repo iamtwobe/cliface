@@ -1,14 +1,19 @@
 from clikit.clikit import CLIKit
+from clikit.layout import CLIKitFrame, CLIKitApp
+from clikit.layout.menu_options import Options
 from clikit.utils import clear_terminal
-from prompt_toolkit import prompt
-from prompt_toolkit.shortcuts import print_container, set_title
-from prompt_toolkit.widgets import Frame, TextArea
+from prompt_toolkit.shortcuts import set_title
+from prompt_toolkit.formatted_text import FormattedText
+from prompt_toolkit.layout.containers import Window
+from prompt_toolkit.layout.controls import FormattedTextControl
+from prompt_toolkit.formatted_text import HTML
+from prompt_toolkit.styles import Style
 import os
 
 
 class MenuScreen():
-    def __init__(self, config: CLIKit, screen_title:str="",
-                screen_text:str="", options:dict=None,
+    def __init__(self, config: CLIKit, title:str="",
+                text:str="", options:dict=None,
                 inline=True, use_logo=False):
         
         if not config:
@@ -20,11 +25,17 @@ class MenuScreen():
         self.bg_color = config.bg_color
         self.fg_color = config.fg_color
         self.cursor = config.cursor
+        self.cursor_fg = config.cursor_fg
+        self.cursor_bg = config.cursor_bg
         self.logo = config.logo
         self.logo_color = config.logo_color
+        self.text_color = config.text_color
+        self.input_color = config.input_color
+        self.title_color = config.title_color
+        self.option_color = config.option_color
 
-        self.screen_title = screen_title
-        self.screen_text = screen_text
+        self.title = title
+        self.text = text
         self.inline = inline
         self.use_logo = use_logo
         self.options = {name:function for name, function in options.items()}
@@ -33,40 +44,78 @@ class MenuScreen():
         set_title(self.terminal_name)
         clear_terminal()
 
-        terminal_columns = os.get_terminal_size().columns
+        screen_logo = self.logo + "\n" if self.use_logo and self.logo else ''
 
-        option_names, option_functions = [], []
+        style = Style.from_dict({
+            '': f'fg:{self.input_color} bg:{self.cursor_bg}',
+            'input': f'fg:{self.input_color} bg:{self.cursor_bg}'
+        })
+
+        option_names, option_functions = {}, []
         count = 0
+        
+        max_spaces = len(max(self.options, key=lambda k: len(k))) + 2
+        inline_options = []
+        
         for option, function in self.options.items():
-            option_names.append(f"{option} [{count + 1}]")
+            inline_options.append(f'{option} [{count+1}]')
+            option_names[option] = count
             option_functions.append(function)
             count+=1
 
-        displaytext = ' | '.join(option_names)
-        terminal_w = (terminal_columns - len(displaytext)) / 2
+        inline_options = ' '.join(inline_options)
 
-        # ITERAR A LISTA E APLICAR COR NOS ÚLTIMOS 3 << "Opção [0]" (Resultado/número)
+        def generate_options():
+            terminal_columns = os.get_terminal_size().columns
+            terminal_lines = os.get_terminal_size().lines
 
-        if terminal_w <= 0 or self.inline == False:
-            displaytext = '\n'.join(option_names)
-        terminal_w -= 1 if (terminal_w % 1) > 0 else 0
+            logo_lines = screen_logo.splitlines()
 
-        screen_logo = self.logo + "\n" if self.use_logo and self.logo else ''
-        screen_text = self.screen_text + "\n\n" if self.screen_text else ''
+            if len(inline_options) > terminal_columns:
+                self.inline = False
+            else:
+                self.inline = True
 
-        print_container(
-            Frame(
-                TextArea(
-                text=f"{screen_logo}{screen_text}{' ' * int(terminal_w)}{displaytext}"
-                ),
-                title=self.screen_title,
-                style=f"bg:{self.bg_color} fg:{self.fg_color}"
+            terminal_h = (terminal_lines - len(logo_lines)) / 2
+            if not self.inline:
+                terminal_h = (terminal_lines - count - len(logo_lines)) / 2
+
+            return Options(
+                option_names=option_names,
+                max_spaces=max_spaces,
+                text_color=self.text_color,
+                option_color=self.option_color,
+                inline=self.inline,
+                size=[terminal_h, terminal_columns]
             )
+
+        def make_dynamic_window():
+            def get_text():
+                body = [
+                    (f"fg:{self.logo_color}", f"{screen_logo}"),
+                    (f"fg:{self.text_color}", f"{self.text}\n")
+                ]
+                body += generate_options()
+                return FormattedText(body)
+
+            return Window(content=FormattedTextControl(get_text))
+
+
+        window = make_dynamic_window()
+
+        frame = CLIKitFrame(
+            body=window,
+            title=HTML(f'<style fg="{self.title_color}">{self.title}</style>'),
+            style=f"bg:{self.bg_color} fg:{self.fg_color}"
         )
-        try:
-            choice = prompt(f"{self.cursor} ")
-            option_functions[int(choice) - 1]()
-        except ValueError:
-            self.show()
-        except IndexError:
-            self.show()
+
+        app_answer = CLIKitApp(
+            window=window,
+            frame=frame,
+            style=style,
+            cursor=self.cursor,
+            cursor_fg=self.cursor_fg
+        )
+
+        result = app_answer.result.lower()
+        return option_functions[int(result)-1]()
