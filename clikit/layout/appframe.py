@@ -14,7 +14,7 @@ class CLIKitApp:
     def __init__(
             self,
             window:Window=None, frame:CLIKitFrame=None,
-            prefix=None, cursor=None, cursor_fg=None,
+             cursor=None, cursor_fg=None,
             yes_no=None, 
             is_password=False, password_char=None,
             style=None
@@ -24,10 +24,19 @@ class CLIKitApp:
         self.style = style
         self.cursor = cursor
         self.cursor_fg = cursor_fg
-        self.prefix = prefix
         self.yes_no = yes_no
         self.is_password = is_password
 
+
+        kb = KeyBindings()
+        @kb.add('enter')
+        def _(event):
+            text = input_area.text.strip()
+            event.app.exit(result=text)
+
+        @kb.add('c-c')
+        def _(event):
+            sys.exit()
 
         prefix_label = Label(
             HTML(f'<prompt fg="{self.cursor_fg}">{self.cursor}</prompt>'),
@@ -49,32 +58,15 @@ class CLIKitApp:
             input_area
         ])
 
-        if self.prefix:
+        if self.yes_no:
+            _yes = yes_no[0]
+            _no = yes_no[1]
             layout = Layout(HSplit([
                 frame,
                 cursor_input,
-                Label(HTML(f'<prefix fg="{self.cursor_fg}">({self.prefix})</prefix>'))
+                Label(HTML(f'<prefix fg="{self.cursor_fg}">({_yes}/{_no})</prefix>'))
             ]))
-        else:
-            layout = Layout(HSplit([
-                frame,
-                cursor_input
-            ]))
-
-        kb = KeyBindings()
-        @kb.add('enter')
-        def _(event):
-            text = input_area.text.strip()
-            event.app.exit(result=text)
-
-        @kb.add('c-c')
-        def _(event):
-            sys.exit()
-
-        if yes_no:
-            _yes = self.yes_no[0]
-            _no = self.yes_no[1]
-
+            
             @kb.add(_yes)
             def _(event):
                 event.app.exit(result=_yes)
@@ -82,6 +74,12 @@ class CLIKitApp:
             @kb.add(_no)
             def _(event):
                 event.app.exit(result=_no)
+        else:
+            layout = Layout(HSplit([
+                frame,
+                cursor_input
+            ]))
+
 
         app = Application(
             layout=layout, key_bindings=kb, style=style, full_screen=True

@@ -1,13 +1,9 @@
 from clikit.clikit import CLIKit
-from clikit.layout import CLIKitFrame, CLIKitApp
+from clikit.layout import CLIKitFrame, CLIKitApp, make_dynamic_window
 from clikit.utils import clear_terminal
 from prompt_toolkit.shortcuts import set_title
-from prompt_toolkit.formatted_text import FormattedText
-from prompt_toolkit.layout.containers import Window
-from prompt_toolkit.layout.controls import FormattedTextControl
 from prompt_toolkit.formatted_text import HTML
 from prompt_toolkit.styles import Style
-import os
 
 
 class InputScreen():
@@ -39,28 +35,17 @@ class InputScreen():
         set_title(self.terminal_name)
         clear_terminal()
 
-        screen_logo = self.logo + "\n" if self.use_logo and self.logo else ''
+        screen_logo = self.logo if self.use_logo and self.logo else ''
 
         style = Style.from_dict({
             '': f'fg:{self.input_color} bg:{self.cursor_bg}',
             'input': f'fg:{self.input_color} bg:{self.cursor_bg}'
         })
 
-        terminal_lines = os.get_terminal_size().lines
-
-        terminal_h = ((terminal_lines - len(screen_logo.splitlines())) / 2)
-
-        terminal_h -= 2 if (terminal_h % 1) > 0 else 0
-
-        text = f"{'\n' * int(terminal_h)}{self.text}"
-
-        body_text = FormattedText([
-            (f"fg:{self.logo_color}", f"{screen_logo}"),
-            (f"fg:{self.text_color}", text)
-        ])
-
-        window = Window(
-            content=FormattedTextControl(body_text)
+        window = make_dynamic_window(
+            screen_logo=screen_logo, logo_color=self.logo_color,
+            text=self.text, text_color=self.text_color,
+            use_logo=self.use_logo
         )
 
         frame = CLIKitFrame(

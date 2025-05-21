@@ -1,6 +1,6 @@
 from prompt_toolkit.layout.containers import (
     VSplit, HSplit, Window, ConditionalContainer,
-    DynamicContainer, Container, AnyContainer, HorizontalAlign
+    DynamicContainer, Container, AnyContainer
 )
 from prompt_toolkit.widgets.base import Border, Condition, Label, Template
 from prompt_toolkit.formatted_text import AnyFormattedText
