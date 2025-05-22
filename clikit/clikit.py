@@ -13,6 +13,7 @@ class CLIKit:
         self.cursor_fg = ""
         self.cursor_bg = ""
         self.title_color = ""
+        self.option_color = ""
 
 
     def config(self, *, terminal_name=None,
