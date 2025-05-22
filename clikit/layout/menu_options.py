@@ -32,7 +32,8 @@ def Options(option_names=None, max_spaces=None, text_color=None, option_color=No
             return max(1, limit)
 
         _count = 1
-        options.append((f"fg:{text_color}", "\n"))
+
+        options.append((f"fg:{text_color}", f"{'\n' if terminal_h > -1 else ''}"))
 
         limit_per_line = calc_limit_per_line(option_names, max_spaces, terminal_columns)
 
