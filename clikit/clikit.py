@@ -29,7 +29,8 @@ class CLIKit:
                 bg_color, fg_color,
                 text_color, input_color,
                 cursor_fg, cursor_bg, 
-                logo_color, title_color
+                logo_color, title_color,
+                option_color
             ) = (
                 loaded_theme["bg_color"], loaded_theme["fg_color"],
                 loaded_theme["text_color"], loaded_theme["input_color"],
