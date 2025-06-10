@@ -118,4 +118,7 @@ class MenuScreen():
         )
 
         result = app_answer.result.lower()
-        return option_functions[int(result)-1]()
+        try:
+            return option_functions[int(result)-1]()
+        except Exception:
+            return self.show()
