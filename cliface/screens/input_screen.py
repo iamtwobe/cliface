@@ -1,5 +1,5 @@
-from clikit.cliface import CLIface
-from clikit.layout import CLIfaceFrame, CLIfaceApp, make_dynamic_window
+from cliface.cliface import CLIface
+from cliface.layout import CLIfaceFrame, CLIfaceApp, make_dynamic_window
 from prompt_toolkit.shortcuts import set_title
 from prompt_toolkit.formatted_text import HTML
 from prompt_toolkit.styles import Style

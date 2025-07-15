@@ -6,7 +6,7 @@ from prompt_toolkit.widgets import Label
 from prompt_toolkit.formatted_text import HTML
 from prompt_toolkit.key_binding import KeyBindings
 from prompt_toolkit.layout.processors import PasswordProcessor
-from clikit.layout.components import CLIfaceFrame
+from cliface.layout.components import CLIfaceFrame
 import sys
 
 

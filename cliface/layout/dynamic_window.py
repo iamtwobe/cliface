@@ -1,4 +1,4 @@
-from clikit.utils.break_text import break_text_by_width
+from cliface.utils.break_text import break_text_by_width
 from prompt_toolkit.formatted_text import FormattedText
 from prompt_toolkit.layout.containers import Window
 from prompt_toolkit.layout.controls import FormattedTextControl

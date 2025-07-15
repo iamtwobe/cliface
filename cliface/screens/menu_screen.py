@@ -1,6 +1,6 @@
-from clikit.cliface import CLIface
-from clikit.layout import CLIfaceFrame, CLIfaceApp
-from clikit.layout.menu_options import Options
+from cliface.cliface import CLIface
+from cliface.layout import CLIfaceFrame, CLIfaceApp
+from cliface.layout.menu_options import Options
 from prompt_toolkit.shortcuts import set_title
 from prompt_toolkit.formatted_text import FormattedText
 from prompt_toolkit.layout.containers import Window
