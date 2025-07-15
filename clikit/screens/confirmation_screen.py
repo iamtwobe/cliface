@@ -1,6 +1,5 @@
 from clikit.clikit import CLIKit
 from clikit.layout import CLIKitFrame, CLIKitApp, make_dynamic_window
-from clikit.utils import clear_terminal
 from prompt_toolkit.shortcuts import set_title
 from prompt_toolkit.formatted_text import HTML
 from prompt_toolkit.styles import Style
@@ -30,7 +29,6 @@ class ConfirmationScreen():
 
     def show(self):
         set_title(self.terminal_name)
-        clear_terminal()
 
         screen_logo = self.logo if self.use_logo and self.logo else ''
 

@@ -1,7 +1,6 @@
 from clikit.clikit import CLIKit
 from clikit.layout import CLIKitFrame, CLIKitApp
 from clikit.layout.menu_options import Options
-from clikit.utils import clear_terminal
 from prompt_toolkit.shortcuts import set_title
 from prompt_toolkit.formatted_text import FormattedText
 from prompt_toolkit.layout.containers import Window
@@ -42,7 +41,6 @@ class MenuScreen():
 
     def show(self):
         set_title(self.terminal_name)
-        clear_terminal()
 
         screen_logo = self.logo + "\n" if self.use_logo and self.logo else ''
 
