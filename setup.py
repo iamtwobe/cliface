@@ -5,7 +5,7 @@ with open('README.md', 'r') as f:
     description = f.read()
 
 setup(
-    name="clikit",
+    name="cliface",
     version="1.0.1",
     description="A CLI toolkit library.",
     packages=find_packages(where="."),
