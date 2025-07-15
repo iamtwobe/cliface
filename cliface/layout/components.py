@@ -7,7 +7,7 @@ from prompt_toolkit.formatted_text import AnyFormattedText
 from functools import partial
 
 
-class CLIKitFrame:
+class CLIfaceFrame:
         
     def __init__(self, body: AnyContainer, title: AnyFormattedText = "", style: str = ""):
         self.title = title

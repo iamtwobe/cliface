@@ -1,8 +1,8 @@
 from .utils.theme_loader import load_theme
 
-class CLIKit:
+class CLIface:
     def __init__(self):
-        self.terminal_name = "CLIKit"
+        self.terminal_name = "CLIface"
         self.bg_color = ""
         self.fg_color= ""
         self.text_color = ""

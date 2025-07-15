@@ -6,14 +6,14 @@ from prompt_toolkit.widgets import Label
 from prompt_toolkit.formatted_text import HTML
 from prompt_toolkit.key_binding import KeyBindings
 from prompt_toolkit.layout.processors import PasswordProcessor
-from clikit.layout.components import CLIKitFrame
+from clikit.layout.components import CLIfaceFrame
 import sys
 
 
-class CLIKitApp:
+class CLIfaceApp:
     def __init__(
             self,
-            window:Window=None, frame:CLIKitFrame=None,
+            window:Window=None, frame:CLIfaceFrame=None,
              cursor=None, cursor_fg=None,
             yes_no=None, 
             is_password=False, password_char=None,

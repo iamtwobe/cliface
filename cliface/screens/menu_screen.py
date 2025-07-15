@@ -1,5 +1,5 @@
-from clikit.clikit import CLIKit
-from clikit.layout import CLIKitFrame, CLIKitApp
+from clikit.cliface import CLIface
+from clikit.layout import CLIfaceFrame, CLIfaceApp
 from clikit.layout.menu_options import Options
 from prompt_toolkit.shortcuts import set_title
 from prompt_toolkit.formatted_text import FormattedText
@@ -11,7 +11,7 @@ import os
 
 
 class MenuScreen():
-    def __init__(self, config: CLIKit, title:str="",
+    def __init__(self, config: CLIface, title:str="",
                 text:str="", options:dict=None,
                 inline=True, use_logo=False):
         
@@ -101,13 +101,13 @@ class MenuScreen():
 
         window = make_dynamic_window()
 
-        frame = CLIKitFrame(
+        frame = CLIfaceFrame(
             body=window,
             title=HTML(f'<style fg="{self.title_color}">{self.title}</style>'),
             style=f"bg:{self.bg_color} fg:{self.fg_color}"
         )
 
-        app_answer = CLIKitApp(
+        app_answer = CLIfaceApp(
             window=window,
             frame=frame,
             style=style,
