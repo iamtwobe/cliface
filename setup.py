@@ -6,7 +6,7 @@ with open('README.md', 'r') as f:
 
 setup(
     name="cliface",
-    version="1.0.1",
+    version="1.0.3",
     description="A CLI toolkit library.",
     packages=find_packages(where="."),
     long_description=description,
@@ -26,5 +26,9 @@ setup(
         ],
     extras_require={
     },
+    package_data={
+        "cliface": ["utils/themes/*.json"],
+    },
+    include_package_data=True,
     python_requires=">=3.12",
 )
